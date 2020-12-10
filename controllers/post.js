@@ -1,12 +1,11 @@
 const postRouter = require('express').Router()
 const Post = require('../models/post')
-const User = require('../models/user')
 const { response } = require('express')
-// const post = require('../models/post')
+
 
 //get all posts
-postRouter.get('./', async(req,res)=>{
-    await Post.find({})
+postRouter.get('/', (req,res, next)=>{
+     Post.find({})
     .then(res =>{
         response.status(200).send(posts)
         next()
@@ -14,13 +13,13 @@ postRouter.get('./', async(req,res)=>{
 })
 
 //create new post
-postRouter.post('./', async(request,response,next)=>{
+postRouter.post('/', async(request,response,next)=>{
     const{title, content} = request.body
     console.log(request.body)
-     
+    const postCount = await Post.countDocuments()
+
     if(title && content){
-        const postCount = await Post.countDocuments()
-        const newPost = new Post({
+            const newPost = new Post({
             id: postCount + 1,
             title: title,
             content: content
@@ -29,9 +28,9 @@ postRouter.post('./', async(request,response,next)=>{
 
         newPost.save()
         .then(res=>{
-            response.status(201).send({message: 'User Created'})
+            response.status(201).send({message: 'Post Added'})
         })
-        .catch(res=>{
+        .catch(err=>{
             console.log(err)
         })   
     }

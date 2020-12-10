@@ -1,46 +1,39 @@
 const express = require ('express')
 const app = express()
+const bodyParser=require('body-parser')
 const mongoose = require ('mongoose')
-
-
-
-const bodyParser = require('body-parser');
-// const router = express.Router()
 const userRouter = require('./controllers/user')
 const postRouter = require('./controllers/post')
 require('dotenv').config()
 
+const PORT = process.env.PORT
 
 const config= {
    useNewUrlParser: true,
    useUnifiedTopology: true
 }
 
-app.use(express.json())
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true}))
 
-app.use(function(req, res, next){
-  res.header('Access-Control-Allow-Origin', '*')
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-TypeError, Accept')
-    next()
-})
-
-mongoose.connect(process.env.MONGODB_URI,{},)
+mongoose.connect(process.env.MONGODB_URI, config)
 .then(()=>{
     console.log('Mongo DB connected successfully') 
 })
-.catch((error)=>{
-console.log('Connection Unsuccessful')
+.catch(err =>{
+console.log('Connection Unsuccessful', err)
 })
-   
+ 
+app.use(bodyParser.json());
+app.use(express.json())
+ 
+ //routes
 app.use('/user', userRouter)
 app.use('/post', postRouter)
 
 
 
-app.listen(process.env.PORT, ()=>{
-  console.log("server started succesfully")
+
+app.listen(PORT, ()=>{
+  console.log("server started succesfully", PORT)
 })
 
 
