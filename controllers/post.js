@@ -13,7 +13,7 @@ postRouter.get('/', (req,res, next)=>{
 })
 
 //create new post
-postRouter.post('/', async(request,response,next)=>{
+postRouter.post('/newpost', async(request,response,next)=>{
     const{title, content} = request.body
     console.log(request.body)
     const postCount = await Post.countDocuments()

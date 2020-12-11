@@ -13,7 +13,7 @@ userRouter.get('/', (request, response, next)=>{
 })
 
 //create ie. sign up a user
-userRouter.post('/', async (request,response, next)=>{
+userRouter.post('/signup', async (request,response, next)=>{
     const name = request.body.name
     const passwordHash= bcrypt.hashSync(request.body.password, 10) 
     console.log(request.body)
@@ -38,7 +38,7 @@ userRouter.post('/', async (request,response, next)=>{
 })
 
 //Login
-userRouter.post('/', async(req, res, next)=>{
+userRouter.post('/login', async(req, res, next)=>{
     const name = request.body.name
     const password = request.body.password
 
